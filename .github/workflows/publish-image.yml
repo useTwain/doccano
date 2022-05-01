@@ -1,13 +1,14 @@
 name: ci
 
 on:
-  schedule:
-    - cron: '0 10 * * *' # everyday at 10am
   push:
     branches:
       - master
     tags:
       - 'v*.*.*'
+  pull_request:
+    branches:
+      - master
 
 env:
   IMAGE_NAME: "twaindoccano"
