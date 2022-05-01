@@ -15,7 +15,11 @@ env:
 
 jobs:
   docker:
+    name: Docker
     runs-on: ubuntu-latest
+    continue-on-error: false
+    environment: 'prd'
+
     steps:
       # Checkout repository
       - name: Check Out Repository
