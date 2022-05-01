@@ -1,42 +1,68 @@
-name: doccano CI
+name: Doccano CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install poetry
-        poetry install
-    - name: Run migrations
-      run: |
-        poetry run task wait_for_db
-        poetry run task migrate
-    - name: Lint with flake8
-      run: |
-        poetry run task flake8
-    - name: Lint with isort
-      run: |
-        poetry run task isort
-    - name: Black
-      run: |
-        poetry run task black
-    - name: mypy
-      run: |
-        poetry run task mypy
-    - name: Run tests
-      run: |
-        poetry run task test
+      # Checkout repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v2
+
+      # Setup Python 3.8
+      - name: Setup Python 3.8
+        id: python_setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      # Setup dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+        
+      # Migrations
+      - name: Run migrations
+        run: |
+          poetry run task wait_for_db
+          poetry run task migrate
+      
+      # Lint with Flake 8
+      - name: Lint with flake8
+        run: |
+          poetry run task flake8
+      
+      # Lint with issort
+      - name: Lint with isort
+        run: |
+          poetry run task isort
+      
+      # Lint with black
+      - name: Lint with Black
+        run: |
+          poetry run task black
+      
+      # Lint with mypy
+      - name: Lint with mypy
+        run: |
+          poetry run task mypy
+      
+      # Run tests
+      - name: Run tests
+        run: |
+          poetry run task test
